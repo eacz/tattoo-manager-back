@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SignUpDto } from './dto/signup.dto';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -8,6 +12,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AuthResponse } from './interfaces/auth-response.interface';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +42,7 @@ export class AuthService {
         email: user.email,
       };
       const token = this.jwtService.sign(payload, {
-        expiresIn: this.configService.get('JWT_EXPIRES_IN') || '3600',
+        expiresIn: this.configService.get('JWT_EXPIRES_IN') || 3600,
       });
       return {
         user,
@@ -45,6 +50,40 @@ export class AuthService {
       };
     } catch (error) {
       this.handleErrors(error);
+    }
+  }
+
+  async login(loginDto: LoginDto): Promise<AuthResponse> {
+    const { password, email } = loginDto;
+    const where = { email };
+    const user = await this.userRepository.findOne({
+      where: where,
+      select: [
+        'id',
+        'username',
+        'name',
+        'email',
+        'password',
+        'active',
+        'createdAt',
+        'updatedAt',
+      ],
+    });
+
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const payload: JwtPayload = {
+        username: user.username,
+        email: user.email,
+      };
+
+      const token = this.jwtService.sign(payload, {
+        expiresIn: this.configService.get('JWT_EXPIRES_IN') || 3600,
+      });
+      delete user.password;
+
+      return { token, user: { ...user } };
+    } else {
+      throw new UnauthorizedException('Invalid credentials');
     }
   }
 
