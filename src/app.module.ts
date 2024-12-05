@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import RequestLogMiddleware from './common/middlewares/requestLog.middleware';
 
 @Module({
@@ -29,6 +30,7 @@ import RequestLogMiddleware from './common/middlewares/requestLog.middleware';
         };
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
