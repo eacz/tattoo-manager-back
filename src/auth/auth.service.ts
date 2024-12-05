@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -84,6 +85,23 @@ export class AuthService {
       return { token, user: { ...user } };
     } else {
       throw new UnauthorizedException('Invalid credentials');
+    }
+  }
+
+  async renewToken(token: string): Promise<{ token: string }> {
+    try {
+      const payload: JwtPayload = await this.jwtService.verify(token);
+      const user = await this.userRepository.findOne({
+        where: { email: payload.email },
+      });
+      delete user.password;
+      const newToken = this.jwtService.sign(
+        { username: payload.username },
+        { expiresIn: this.configService.get('JWT_EXPIRES_IN') || 3600 },
+      );
+      return { token: newToken };
+    } catch (error) {
+      throw new BadRequestException('Invalid token');
     }
   }
 
