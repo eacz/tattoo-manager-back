@@ -16,6 +16,7 @@ import { SignUpDto } from './dto/signup.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AuthResponse } from './interfaces/auth-response.interface';
 import { LoginDto } from './dto/login.dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
     private userRepository: Repository<User>,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private readonly i18n: I18nService,
   ) {}
 
   async create(signUpDto: SignUpDto): Promise<AuthResponse> {
@@ -31,7 +33,7 @@ export class AuthService {
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    
+
     if (!username) {
       username = generateFromEmail(signUpDto.email, 4);
     }
@@ -39,7 +41,7 @@ export class AuthService {
     let user = this.userRepository.create({
       ...signUpDto,
       password: hashedPassword,
-      username
+      username,
     });
 
     try {
@@ -91,7 +93,7 @@ export class AuthService {
 
       return { token, user: { ...user } };
     } else {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(this.i18n.t('responses.auth.invalid-credentials'));
     }
   }
 
@@ -108,14 +110,14 @@ export class AuthService {
       );
       return { token: newToken };
     } catch (error) {
-      throw new BadRequestException('Invalid token');
+      throw new BadRequestException(this.i18n.t('responses.auth.invalid-token'));
     }
   }
 
   private handleErrors(error: any) {
     if (error.code === '23505') {
-      let message = error.detail.includes('username') ? 'Username' : 'Email';
-      message += ' already used';
+      const field = error.detail.includes('username') ? this.i18n.t('responses.auth.username') : 'Email';
+      const message = this.i18n.t('responses.auth.conflict-field', {args: {field}})
       throw new ConflictException(message);
     } else {
       throw error;

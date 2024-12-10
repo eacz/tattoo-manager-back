@@ -1,0 +1,11 @@
+{
+  "hello": "Hello World",
+  "auth": {
+    "invalid-credentials": "Invalid Credentials",
+    "invalid-token": "Invalid token",
+    "username": "Username",
+    "conflict-field": "{field} already used"
+
+
+  }
+}

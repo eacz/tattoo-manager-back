@@ -1,0 +1,9 @@
+{
+  "hello": "Hola mundo",
+  "auth": {
+    "invalid-credentials": "Credenciales inválidas",
+    "invalid-token": "Token inválido",
+    "username": "Nombre de usuario",
+    "conflict-field": "{field} no disponible"
+  }
+}
