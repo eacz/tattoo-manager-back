@@ -4,13 +4,15 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SignUpDto } from './dto/signup.dto';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { generateFromEmail } from 'unique-username-generator';
+
+import { User } from './entities/user.entity';
+import { SignUpDto } from './dto/signup.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AuthResponse } from './interfaces/auth-response.interface';
 import { LoginDto } from './dto/login.dto';
@@ -23,16 +25,21 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
+
   async create(signUpDto: SignUpDto): Promise<AuthResponse> {
-    console.log(signUpDto);
-    const { password } = signUpDto;
+    let { password, username } = signUpDto;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
+    
+    if (!username) {
+      username = generateFromEmail(signUpDto.email, 4);
+    }
 
     let user = this.userRepository.create({
       ...signUpDto,
       password: hashedPassword,
+      username
     });
 
     try {
