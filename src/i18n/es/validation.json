@@ -1,0 +1,9 @@
+{
+  "NOT_EMPTY": "{property} no puede estar vacio",
+  "INVALID_EMAIL": "email inválido",
+  "INVALID_BOOLEAN": "{property} no es un booleano",
+  "MIN": "{property} con el valor: \"{value}\" tiene que tener una longitud mínima de {constraints.0}, ow y {message}",
+  "MAX": "{property} con el valor: \"{value}\" tiene que tener una longitud menor a {constraints.0}, ow y {message}",
+  "IS_STRING": "{property} tiene que ser un texto"
+
+}

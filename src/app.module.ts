@@ -24,6 +24,7 @@ import RequestLogMiddleware from './common/middlewares/requestLog.middleware';
         path: path.join(__dirname, '/i18n/'),
         watch: true,
       },
+      typesOutputPath: path.join(__dirname, '../src/generated/i18n.generated.ts'),
       resolvers: [
         { use: QueryResolver, options: ['lang'] },
         AcceptLanguageResolver,
