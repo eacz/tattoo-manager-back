@@ -5,7 +5,9 @@
     "invalid-token": "Invalid token",
     "username": "Username",
     "conflict-field": "{field} already used"
-
-
+  },
+  "appointment": {
+    "invalid-start-date": "The start date must be a date less than the end one",
+    "invalid-earnest-money": "The earnest money should be an amount less than the full price"
   }
 }

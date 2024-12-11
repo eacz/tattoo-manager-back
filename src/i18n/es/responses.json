@@ -5,5 +5,9 @@
     "invalid-token": "Token inválido",
     "username": "Nombre de usuario",
     "conflict-field": "{field} no disponible"
+  },
+  "appointment": {
+    "invalid-start-date": "La fecha inicial tiene que ser una fecha menor a la fecha de fin",
+    "invalid-earnest-money": "La seña debe ser de un monto menor al del precio total"
   }
 }

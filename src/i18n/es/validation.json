@@ -4,6 +4,8 @@
   "INVALID_BOOLEAN": "{property} no es un booleano",
   "MIN": "{property} con el valor: \"{value}\" tiene que tener una longitud mínima de {constraints.0}, ow y {message}",
   "MAX": "{property} con el valor: \"{value}\" tiene que tener una longitud menor a {constraints.0}, ow y {message}",
-  "IS_STRING": "{property} tiene que ser un texto"
-
+  "IS_STRING": "{property} tiene que ser un texto",
+  "IS_NUMBER": "{property} tiene que ser un número",
+  "IS_ENUM": "{property} tiene que ser alguno de los siguientes valores {constraints.0}",
+  "IS_DATE": "{property} tiene que ser una fecha válida"
 }

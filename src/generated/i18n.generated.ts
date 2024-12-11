@@ -13,6 +13,10 @@ export type I18nTranslations = {
             "username": string;
             "conflict-field": string;
         };
+        "appointment": {
+            "invalid-start-date": string;
+            "invalid-earnest-money": string;
+        };
     };
     "validation": {
         "NOT_EMPTY": string;
@@ -21,6 +25,9 @@ export type I18nTranslations = {
         "MIN": string;
         "MAX": string;
         "IS_STRING": string;
+        "IS_NUMBER": string;
+        "IS_ENUM": string;
+        "IS_DATE": string;
     };
 };
 /* prettier-ignore */

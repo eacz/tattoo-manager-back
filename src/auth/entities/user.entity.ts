@@ -1,7 +1,9 @@
+import { Appointment } from 'src/appointment/entities/appointment.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,6 +27,9 @@ export class User {
 
   @Column('boolean', { default: true })
   active: boolean;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.user)
+  appointments: Appointment[];
 
   @CreateDateColumn({
     type: 'timestamp',
