@@ -19,10 +19,10 @@ export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'date' })
+  @CreateDateColumn()
   dateStart: Date;
 
-  @Column({ type: 'date' })
+  @CreateDateColumn()
   dateEnd: Date;
 
   @Column()

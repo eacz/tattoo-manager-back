@@ -28,6 +28,7 @@ export type I18nTranslations = {
         "IS_NUMBER": string;
         "IS_ENUM": string;
         "IS_DATE": string;
+        "IS_POSITIVE": string;
     };
 };
 /* prettier-ignore */

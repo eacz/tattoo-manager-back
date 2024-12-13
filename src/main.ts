@@ -20,7 +20,10 @@ async function bootstrap() {
     //  transform: true,
     //  transformOptions: { enableImplicitConversion: true },
     //}),
-    new I18nValidationPipe(),
+    new I18nValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
   );
 
   app.useGlobalFilters(new I18nValidationExceptionFilter());

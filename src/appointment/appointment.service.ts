@@ -5,9 +5,10 @@ import { I18nTranslations } from 'src/generated/i18n.generated';
 
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { Repository } from 'typeorm';
+import { LessThan, MoreThan, Repository, Between } from 'typeorm';
 import { Appointment } from './entities/appointment.entity';
 import { User } from 'src/auth/entities/user.entity';
+import { GetAppointmentsDto } from './dto/get-appointments.dto';
 
 @Injectable()
 export class AppointmentService {
@@ -35,14 +36,25 @@ export class AppointmentService {
       );
     }
 
-    const appointment = this.appointmentRepository.create(createAppointmentDto);
+    const appointment = this.appointmentRepository.create({...createAppointmentDto, user});
     await this.appointmentRepository.save(appointment);
 
     return { ok: true, appointment };
   }
 
-  findAll() {
-    return `This action returns all appointment`;
+  async findAll(getAppointmentsDto: GetAppointmentsDto, user: User) {
+    const { endDate, startDate, limit = 10, offset = 0 } = getAppointmentsDto;
+
+    const appointments = await this.appointmentRepository.find({
+      skip: offset,
+      take: limit,
+      order: { dateStart: 'ASC' },
+      where: {
+        dateEnd: Between(startDate, endDate),
+        user: { id: user.id },
+      },
+    });
+    return { ok: true, appointments };
   }
 
   findOne(id: number) {

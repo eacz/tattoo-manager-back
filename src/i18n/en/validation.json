@@ -7,6 +7,7 @@
   "IS_STRING": "{property} must be a string",
   "IS_NUMBER": "{property} must be a number",
   "IS_ENUM": "{property} must be one of the following values {constraints.0}",
-  "IS_DATE": "{property} must be a valid date"
+  "IS_DATE": "{property} must be a valid date",
+  "IS_POSITIVE": "{property} must be a positive number"
   
 }
