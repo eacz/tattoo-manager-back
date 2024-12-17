@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
@@ -19,8 +23,6 @@ export class AppointmentService {
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto, user: User) {
-    console.log(createAppointmentDto);
-    console.log(user);
     if (createAppointmentDto.dateStart > createAppointmentDto.dateEnd) {
       throw new BadRequestException(
         this.i18n.t('responses.appointment.invalid-start-date'),
@@ -57,7 +59,7 @@ export class AppointmentService {
           dateEnd: Between(startDate, endDate),
           user: { id: user.id },
         },
-        select: ['dateStart', 'dateEnd', 'id', 'status', 'title']
+        select: ['dateStart', 'dateEnd', 'id', 'status', 'title'],
       }),
       this.appointmentRepository.count({
         where: {
@@ -69,8 +71,19 @@ export class AppointmentService {
     return { ok: true, appointments, total };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} appointment`;
+  async findOne(id: number, user: User) {
+    const appointment = await this.appointmentRepository.findOne({
+      where: {
+        id,
+        user: { id: user.id },
+      },
+    });
+    if (!appointment) {
+      throw new NotFoundException(
+        this.i18n.t('responses.appointment.invalid-id', { args: { id } }),
+      );
+    }
+    return { ok: true, appointment };
   }
 
   update(id: number, updateAppointmentDto: UpdateAppointmentDto) {

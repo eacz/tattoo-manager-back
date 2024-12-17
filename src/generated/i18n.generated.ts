@@ -16,6 +16,7 @@ export type I18nTranslations = {
         "appointment": {
             "invalid-start-date": string;
             "invalid-earnest-money": string;
+            "invalid-id": string;
         };
     };
     "validation": {
