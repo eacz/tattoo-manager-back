@@ -90,7 +90,18 @@ export class AppointmentService {
     return `This action updates a #${id} appointment`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} appointment`;
+  async remove(id: number, user: User) {
+    const result = await this.appointmentRepository.delete({
+      id,
+      user: { id: user.id },
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        this.i18n.t('responses.appointment.invalid-id', { args: { id } }),
+      );
+    }
+
+    return { ok: true };
   }
 }
