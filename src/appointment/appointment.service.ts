@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Between } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { LessThan, MoreThan, Repository, Between } from 'typeorm';
 import { Appointment } from './entities/appointment.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { GetAppointmentsDto } from './dto/get-appointments.dto';
@@ -36,7 +36,10 @@ export class AppointmentService {
       );
     }
 
-    const appointment = this.appointmentRepository.create({...createAppointmentDto, user});
+    const appointment = this.appointmentRepository.create({
+      ...createAppointmentDto,
+      user,
+    });
     await this.appointmentRepository.save(appointment);
 
     return { ok: true, appointment };
@@ -45,16 +48,25 @@ export class AppointmentService {
   async findAll(getAppointmentsDto: GetAppointmentsDto, user: User) {
     const { endDate, startDate, limit = 10, offset = 0 } = getAppointmentsDto;
 
-    const appointments = await this.appointmentRepository.find({
-      skip: offset,
-      take: limit,
-      order: { dateStart: 'ASC' },
-      where: {
-        dateEnd: Between(startDate, endDate),
-        user: { id: user.id },
-      },
-    });
-    return { ok: true, appointments };
+    const [appointments, total] = await Promise.all([
+      this.appointmentRepository.find({
+        skip: offset,
+        take: limit,
+        order: { dateStart: 'ASC' },
+        where: {
+          dateEnd: Between(startDate, endDate),
+          user: { id: user.id },
+        },
+        select: ['dateStart', 'dateEnd', 'id', 'status', 'title']
+      }),
+      this.appointmentRepository.count({
+        where: {
+          dateEnd: Between(startDate, endDate),
+          user: { id: user.id },
+        },
+      }),
+    ]);
+    return { ok: true, appointments, total };
   }
 
   findOne(id: number) {
