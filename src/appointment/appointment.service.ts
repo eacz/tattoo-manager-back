@@ -68,7 +68,18 @@ export class AppointmentService {
         },
       }),
     ]);
-    return { ok: true, appointments, total };
+    //TODO: fix this renaming field with a query builder
+    return {
+      ok: true,
+      appointments: appointments.map((appointment) => ({
+        end: appointment.dateEnd,
+        start: appointment.dateStart,
+        title: appointment.title,
+        status: appointment.status,
+        id: appointment.id,
+      })),
+      total,
+    };
   }
 
   async findOne(id: number, user: User) {
