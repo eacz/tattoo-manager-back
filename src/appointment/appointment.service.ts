@@ -97,8 +97,26 @@ export class AppointmentService {
     return { ok: true, appointment };
   }
 
-  update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
-    return `This action updates a #${id} appointment`;
+  async update(
+    id: number,
+    updateAppointmentDto: UpdateAppointmentDto,
+    user: User,
+  ) {
+    const result = await this.appointmentRepository.update(
+      {
+        id,
+        user: { id: user.id },
+      },
+      updateAppointmentDto,
+    );
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        this.i18n.t('responses.appointment.invalid-id', { args: { id } }),
+      );
+    }
+
+    return { ok: true };
   }
 
   async remove(id: number, user: User) {

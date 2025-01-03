@@ -43,8 +43,9 @@ export class AppointmentController {
   update(
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
+    @getUser() user: User
   ) {
-    return this.appointmentService.update(+id, updateAppointmentDto);
+    return this.appointmentService.update(+id, updateAppointmentDto, user);
   }
 
   @Delete(':id')
