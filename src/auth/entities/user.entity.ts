@@ -1,9 +1,12 @@
 import { Appointment } from 'src/appointment/entities/appointment.entity';
+import { Schedule } from 'src/schedule/entities/schedule.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -30,6 +33,10 @@ export class User {
 
   @OneToMany(() => Appointment, (appointment) => appointment.user)
   appointments: Appointment[];
+
+  @OneToOne(() => Schedule)
+  @JoinColumn()
+  schedule: User;
 
   @CreateDateColumn({
     type: 'timestamp',

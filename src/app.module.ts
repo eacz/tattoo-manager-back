@@ -17,6 +17,8 @@ import { AppointmentModule } from './appointment/appointment.module';
 import RequestLogMiddleware from './common/middlewares/requestLog.middleware';
 import { User } from './auth/entities/user.entity';
 import { Appointment } from './appointment/entities/appointment.entity';
+import { ScheduleModule } from './schedule/schedule.module';
+import { Schedule } from './schedule/entities/schedule.entity';
 
 @Module({
   imports: [
@@ -52,13 +54,14 @@ import { Appointment } from './appointment/entities/appointment.entity';
           database: configService.get('PGDB'),
           autoLoadEntities: true,
           synchronize: true,
-          entities: [User, Appointment],
+          entities: [User, Appointment, Schedule],
           port: configService.get('PGPORT'),
         };
       },
     }),
     AuthModule,
     AppointmentModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
