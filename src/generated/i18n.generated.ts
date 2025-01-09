@@ -18,6 +18,9 @@ export type I18nTranslations = {
             "invalid-earnest-money": string;
             "invalid-id": string;
         };
+        "schedule": {
+            "duplicated-schedule": string;
+        };
     };
     "validation": {
         "NOT_EMPTY": string;
@@ -30,6 +33,8 @@ export type I18nTranslations = {
         "IS_ENUM": string;
         "IS_DATE": string;
         "IS_POSITIVE": string;
+        "IS_IN": string;
+        "IS_SCHEDULE": string;
     };
 };
 /* prettier-ignore */

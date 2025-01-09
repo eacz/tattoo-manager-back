@@ -10,6 +10,8 @@
     "invalid-start-date": "La fecha inicial tiene que ser una fecha menor a la fecha de fin",
     "invalid-earnest-money": "La seña debe ser de un monto menor al del precio total",
     "invalid-id": "No existe un turno con el id {id}"
-
+  },
+  "schedule": {
+    "duplicated-schedule": "Ya tenés una agenda creada, podés actualizarla"
   }
 }

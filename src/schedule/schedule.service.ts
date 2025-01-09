@@ -1,15 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { I18nService } from 'nestjs-i18n';
+import { Repository } from 'typeorm';
+
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 
+import { User } from 'src/auth/entities/user.entity';
+import { Schedule } from './entities/schedule.entity'
+;
+import { I18nTranslations } from 'src/generated/i18n.generated';
+
 @Injectable()
 export class ScheduleService {
-  create(createScheduleDto: CreateScheduleDto) {
-    return 'This action adds a new schedule';
-  }
+  constructor(
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
+    private readonly i18n: I18nService<I18nTranslations>,
+  ) {}
 
-  findAll() {
-    return `This action returns all schedule`;
+  async create(createScheduleDto: CreateScheduleDto, user: User) {
+    try {
+      const schedule = this.scheduleRepository.create({
+        ...createScheduleDto,
+        user: user,
+      });
+      await this.scheduleRepository.save(schedule);
+      return { ok: true, schedule };
+    } catch (error: any) {
+      if (error?.code === '23505') {
+        throw new UnprocessableEntityException(
+          this.i18n.t('responses.schedule.duplicated-schedule'),
+        );
+      }
+    }
   }
 
   findOne(id: number) {

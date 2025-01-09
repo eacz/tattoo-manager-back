@@ -8,6 +8,7 @@
   "IS_NUMBER": "{property} must be a number",
   "IS_ENUM": "{property} must be one of the following values {constraints.0}",
   "IS_DATE": "{property} must be a valid date",
-  "IS_POSITIVE": "{property} must be a positive number"
-  
+  "IS_POSITIVE": "{property} must be a positive number",
+  "IS_IN": "each value in {property} must be one of the following values: {constraints.0}",
+  "IS_SCHEDULE": "each value in {property} must satisfy the format HH:mm"
 }

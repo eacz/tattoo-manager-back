@@ -6,10 +6,10 @@ export class Schedule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('simple-array', { array: true })
+  @Column('text', { array: true })
   schedulesHours: string[];
 
-  @Column('simple-array', { array: true })
+  @Column('text', { array: true })
   workdays: string[];
 
   @OneToOne(() => User)
