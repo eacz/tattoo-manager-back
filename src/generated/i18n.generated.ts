@@ -20,6 +20,7 @@ export type I18nTranslations = {
         };
         "schedule": {
             "duplicated-schedule": string;
+            "invalid-id": string;
         };
     };
     "validation": {

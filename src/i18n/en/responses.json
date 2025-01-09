@@ -12,6 +12,7 @@
     "invalid-id": "There is no appointment with the id {id}"
   },
   "schedule": {
-    "duplicated-schedule": "You already have an schedule created, try updating it"
+    "duplicated-schedule": "You already have an schedule created, try updating it",
+    "invalid-id": "You don't have an schedule created"
   }
 }

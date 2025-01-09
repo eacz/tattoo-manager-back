@@ -12,6 +12,7 @@
     "invalid-id": "No existe un turno con el id {id}"
   },
   "schedule": {
-    "duplicated-schedule": "Ya tenés una agenda creada, podés actualizarla"
+    "duplicated-schedule": "Ya tenés una agenda creada, podés actualizarla",
+    "invalid-id": "No tienes una agenda creada"
   }
 }

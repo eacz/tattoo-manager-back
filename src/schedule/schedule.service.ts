@@ -1,4 +1,8 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { Repository } from 'typeorm';
@@ -7,8 +11,7 @@ import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 
 import { User } from 'src/auth/entities/user.entity';
-import { Schedule } from './entities/schedule.entity'
-;
+import { Schedule } from './entities/schedule.entity';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 
 @Injectable()
@@ -36,8 +39,14 @@ export class ScheduleService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} schedule`;
+  async findByUser(user: User) {
+    const schedule = await this.scheduleRepository.findOne({
+      where: { user: { id: user.id } },
+    });
+    if (!schedule) {
+      throw new NotFoundException(this.i18n.t('responses.schedule.invalid-id'));
+    }
+    return schedule;
   }
 
   update(id: number, updateScheduleDto: UpdateScheduleDto) {
