@@ -13,6 +13,6 @@
   },
   "schedule": {
     "duplicated-schedule": "You already have an schedule created, try updating it",
-    "invalid-id": "You don't have an schedule created"
+    "no-schedule": "You don't have an schedule created"
   }
 }

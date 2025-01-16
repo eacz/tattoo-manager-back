@@ -13,6 +13,6 @@
   },
   "schedule": {
     "duplicated-schedule": "Ya tenés una agenda creada, podés actualizarla",
-    "invalid-id": "No tienes una agenda creada"
+    "no-schedule": "No tenés una agenda creada"
   }
 }

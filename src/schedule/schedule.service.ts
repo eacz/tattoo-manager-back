@@ -44,16 +44,41 @@ export class ScheduleService {
       where: { user: { id: user.id } },
     });
     if (!schedule) {
-      throw new NotFoundException(this.i18n.t('responses.schedule.invalid-id'));
+      throw new NotFoundException(
+        this.i18n.t('responses.schedule.no-schedule'),
+      );
     }
     return schedule;
   }
 
-  update(id: number, updateScheduleDto: UpdateScheduleDto) {
-    return `This action updates a #${id} schedule`;
+  async update(updateScheduleDto: UpdateScheduleDto, user: User) {
+    const result = await this.scheduleRepository.update(
+      {
+        user: { id: user.id },
+      },
+      updateScheduleDto,
+    );
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        this.i18n.t('responses.schedule.no-schedule'),
+      );
+    }
+
+    return { ok: true };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} schedule`;
+  async remove(user: User) {
+    const result = await this.scheduleRepository.delete({
+      user: { id: user.id },
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        this.i18n.t('responses.schedule.no-schedule'),
+      );
+    }
+
+    return { ok: true };
   }
 }
