@@ -36,6 +36,7 @@ export type I18nTranslations = {
         "IS_POSITIVE": string;
         "IS_IN": string;
         "IS_SCHEDULE": string;
+        "IS_LESS_THAN": string;
     };
 };
 /* prettier-ignore */

@@ -98,7 +98,7 @@ export class AuthService {
     }
   }
 
-  async renewToken(token: string): Promise<{ token: string }> {
+  async renewToken(token: string): Promise<{ token: string, user: User }> {
     try {
       const payload: JwtPayload = await this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
@@ -109,7 +109,7 @@ export class AuthService {
         { username: payload.username },
         { expiresIn: this.configService.get('JWT_EXPIRES_IN') || 3600 },
       );
-      return { token: newToken };
+      return { token: newToken, user };
     } catch (error) {
       throw new BadRequestException(this.i18n.t('responses.auth.invalid-token'));
     }

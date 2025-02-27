@@ -10,5 +10,6 @@
   "IS_DATE": "{property} must be a valid date",
   "IS_POSITIVE": "{property} must be a positive number",
   "IS_IN": "each value in {property} must be one of the following values: {constraints.0}",
-  "IS_SCHEDULE": "each value in {property} must satisfy the format HH:mm"
+  "IS_SCHEDULE": "each value in {property} must satisfy the format HH:mm",
+  "IS_LESS_THAN": "The value of {property} has to be less than the {constraints.0}"
 }

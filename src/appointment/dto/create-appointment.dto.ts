@@ -10,6 +10,7 @@ import { i18nValidationMessage } from 'nestjs-i18n';
 import { I18nTranslations } from 'src/generated/i18n.generated';
 import { Status } from '../entities/appointment.entity';
 import { Type } from 'class-transformer';
+import { IsLessThan } from '../decorators/is-less-than.validator';
 
 export class CreateAppointmentDto {
   @IsDate({
@@ -53,6 +54,9 @@ export class CreateAppointmentDto {
       message: i18nValidationMessage<I18nTranslations>('validation.IS_NUMBER'),
     },
   )
+  @IsLessThan('price', {
+    message: i18nValidationMessage<I18nTranslations>('validation.IS_LESS_THAN'),
+  })
   earnestMoney?: number;
 
   @IsString({
