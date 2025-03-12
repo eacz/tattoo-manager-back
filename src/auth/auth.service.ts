@@ -94,11 +94,13 @@ export class AuthService {
 
       return { token, user: { ...user } };
     } else {
-      throw new UnauthorizedException(this.i18n.t('responses.auth.invalid-credentials'));
+      throw new UnauthorizedException(
+        this.i18n.t('responses.auth.invalid-credentials'),
+      );
     }
   }
 
-  async renewToken(token: string): Promise<{ token: string, user: User }> {
+  async renewToken(token: string): Promise<{ token: string; user: User }> {
     try {
       const payload: JwtPayload = await this.jwtService.verify(token);
       const user = await this.userRepository.findOne({
@@ -111,14 +113,29 @@ export class AuthService {
       );
       return { token: newToken, user };
     } catch (error) {
-      throw new BadRequestException(this.i18n.t('responses.auth.invalid-token'));
+      throw new BadRequestException(
+        this.i18n.t('responses.auth.invalid-token'),
+      );
     }
+  }
+
+  async getUserInfo(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      select: ['active', 'email', 'name', 'createdAt'],
+    });
+
+    return user
   }
 
   private handleErrors(error: any) {
     if (error.code === '23505') {
-      const field = error.detail.includes('username') ? this.i18n.t('responses.auth.username') : 'Email';
-      const message = this.i18n.t('responses.auth.conflict-field', {args: {field}})
+      const field = error.detail.includes('username')
+        ? this.i18n.t('responses.auth.username')
+        : 'Email';
+      const message = this.i18n.t('responses.auth.conflict-field', {
+        args: { field },
+      });
       throw new ConflictException(message);
     } else {
       throw error;
