@@ -122,7 +122,7 @@ export class AuthService {
   async getUserInfo(userId: number) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      select: ['active', 'email', 'name', 'createdAt'],
+      select: ['active', 'email', 'name', 'createdAt', 'username'],
     });
 
     return user
